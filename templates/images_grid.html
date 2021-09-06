@@ -1,0 +1,640 @@
+{% extends 'layout/addDatalayout.html' %} 
+
+{% block nav %}
+
+<div class="nav1">
+  <input type="checkbox" id="nav-check" />
+  <div class="nav-header">
+    <div class="nav-title">
+      <!-- <h3 style="color: #00a650; margin: auto; margin-left: 30px">
+        Patang-Abhidani
+      </h3> -->
+      <a class="navbar-brand" href="#" style="color: #00a650;">
+        <img src="../static/img/pfinal2-removebg-preview.png" width="220" height="50" alt="Patang-Abhidani">
+      </a>
+    </div>
+  </div>
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+
+  <div class="nav-links">
+    <a href="http://127.0.0.1:5000/">Home</a>
+    <a href="http://127.0.0.1:5000/">About</a>
+    <a class="" href="{{ url_for('images_grid') }}">Occurrences</a>
+    <a class="" href="{{url_for('upload')}}">Upload</a>
+    {% if sess==false %}
+    <a
+      class="regbtn"
+      href="{{url_for('new_login')}}"
+      style="
+        float: right;
+        background-color: #00a650;
+        margin-right: 60px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        margin-top: 5px;
+        border-radius: 12px;
+      "
+      >Register/Login</a
+    >
+    {% endif %}
+    {% if sess==true %}
+    <a
+      class="regbtn"
+      style="
+        float: right;
+        background-color: transparent;
+        margin-right: 60px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        margin-top: 5px;
+        color: #eee;
+      " href="{{url_for('logout')}}"
+      >Log out</a
+    >
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{%block title %}
+<div class="container">
+  <div class="row text-center">
+    <div class="analysis">
+      <h1 style="color: #fff;">Meet the family of Skippers</h1>
+      <p style="color: #fff;">(Tabular format, Gallery format, Map based filtering)</p>
+    </div>
+  </div>
+</div>
+{% endblock %} 
+   
+{% block table%}<!-- 
+<button onclick="exportTableToCSV('butterflies.csv')">Download data</button> -->
+<script>
+    
+  getPagination("#table-id");
+  $("#maxRows").trigger("change");
+
+  function getPagination(table) {
+    $("#maxRows").on("change", function () {
+      $(".pagination").html(""); // reset pagination div
+      var trnum = 0; // reset tr counter
+      var maxRows = parseInt($(this).val()); // get Max Rows from select option
+
+      var totalRows = $(table + " tbody tr").length; // numbers of rows
+      $(table + " tr:gt(0)").each(function () {
+        // each TR in  table and not the header
+        trnum++; // Start Counter
+        if (trnum > maxRows) {
+          // if tr number gt maxRows
+
+          $(this).hide(); // fade it out
+        }
+        if (trnum <= maxRows) {
+          $(this).show();
+        } // else fade in Important in case if it ..
+      }); //  was fade out to fade it in
+      if (totalRows > maxRows) {
+        // if tr total rows gt max rows option
+        var pagenum = Math.ceil(totalRows / maxRows); // ceil total(rows/maxrows) to get ..
+        //	numbers of pages
+        for (var i = 1; i <= pagenum; ) {
+          // for each page append pagination li
+          $(".pagination")
+            .append(
+              '<li data-page="' +
+                i +
+                '">\
+								      <span>' +
+                i++ +
+                '<span class="sr-only">(current)</span></span>\
+								    </li>'
+            )
+            .show();
+        } // end for i
+      } // end if row count > max rows
+      $(".pagination li:first-child").addClass("active"); // add active class to the first li
+
+      //SHOWING ROWS NUMBER OUT OF TOTAL DEFAULT
+      showig_rows_count(maxRows, 1, totalRows);
+      //SHOWING ROWS NUMBER OUT OF TOTAL DEFAULT
+
+      $(".pagination li").on("click", function (e) {
+        // on click each page
+        e.preventDefault();
+        var pageNum = $(this).attr("data-page"); // get it's number
+        var trIndex = 0; // reset tr counter
+        $(".pagination li").removeClass("active"); // remove active class from all li
+        $(this).addClass("active"); // add active class to the clicked
+
+        //SHOWING ROWS NUMBER OUT OF TOTAL
+        showig_rows_count(maxRows, pageNum, totalRows);
+        //SHOWING ROWS NUMBER OUT OF TOTAL
+
+        $(table + " tr:gt(0)").each(function () {
+          // each tr in table not the header
+          trIndex++; // tr index counter
+          // if tr index gt maxRows*pageNum or lt maxRows*pageNum-maxRows fade if out
+          if (
+            trIndex > maxRows * pageNum ||
+            trIndex <= maxRows * pageNum - maxRows
+          ) {
+            $(this).hide();
+          } else {
+            $(this).show();
+          } //else fade in
+        }); // end of for each tr in table
+      }); // end of on click pagination list
+    });
+    // end of on select change
+
+    // END OF PAGINATION
+  }
+
+  // SI SETTING
+  
+
+  //ROWS SHOWING FUNCTION
+  function showig_rows_count(maxRows, pageNum, totalRows) {
+    //Default rows showing
+    var end_index = maxRows * pageNum;
+    var start_index = maxRows * pageNum - maxRows + parseFloat(1);
+    var string =
+      "Showing " +
+      start_index +
+      " to " +
+      end_index +
+      " of " +
+      totalRows +
+      " entries";
+    $(".rows_count").html(string);
+  }
+
+  // CREATING INDEX
+  
+
+  // All Table search script
+  function FilterkeyWord_all_table() {
+    // Count td if you want to search on all table instead of specific column
+
+    var count = $(".table")
+      .children("tbody")
+      .children("tr:first-child")
+      .children("td").length;
+
+    // Declare variables
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("search_input_all");
+    var input_value = document.getElementById("search_input_all").value;
+    console.log(typeof input);
+    filter = input.value.toLowerCase();
+    if (input_value != "") {
+      table = document.getElementById("table-id");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 1; i < tr.length; i++) {
+        var flag = 0;
+
+        for (j = 0; j < count; j++) {
+          td = tr[i].getElementsByTagName("td")[j];
+          if (td) {
+            var td_text = td.innerHTML;
+            if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+              //var td_text = td.innerHTML;
+              //td.innerHTML = 'shaban';
+              flag = 1;
+            } else {
+              //DO NOTHING
+            }
+          }
+        }
+        if (flag == 1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    } else {
+      //RESET TABLE
+      // $("#maxRows").trigger("change");
+      tr.style.display="";
+    }
+  }
+</script>
+<script>  
+//user-defined function to download CSV file  
+function downloadCSV(csv, filename) {  
+    var csvFile;  
+    var downloadLink;  
+      
+    //define the file type to text/csv  
+    csvFile = new Blob([csv], {type: 'text/csv'});  
+    downloadLink = document.createElement("a");  
+    downloadLink.download = filename;  
+    downloadLink.href = window.URL.createObjectURL(csvFile);  
+    downloadLink.style.display = "none";  
+  
+    document.body.appendChild(downloadLink);  
+    downloadLink.click();  
+}  
+  
+//user-defined function to export the data to CSV file format  
+function exportTableToCSV(filename) {  
+    //declare a JavaScript variable of array type  
+    var csv = [];  
+    var rows = document.querySelectorAll("table tr");  
+    
+    //merge the whole data in tabular form   
+    for(var i=0; i<rows.length; i++) {  
+    var row = [], cols = rows[i].querySelectorAll("td, th");  
+    for( var j=0; j<cols.length; j++)  
+        row.push(cols[j].innerText);  
+    csv.push(row.join(","));  
+    }   
+    //call the function to download the CSV file  
+    downloadCSV(csv.join("\n"), filename);  
+}  
+</script>  
+
+<style>
+  
+  table th,
+  table td {
+    text-align: left;
+  }
+
+  table tr:nth-child(even) {
+    background-color: rgb(218, 248, 182);
+  }
+
+  th {
+    background-color: #4CAF50 !important; 
+    color: white;
+    font-size: large;
+    border:1px solid #3b8a3e ;
+  }
+
+  td {
+    border-left: 1px solid #4CAF50;
+    border-right: 1px solid #4CAF50;
+  }
+
+  .pagination {
+    margin: 0;
+  }
+
+  .pagination li:hover {
+    cursor: pointer;
+  }
+
+  .header_wrap {
+    padding: 30px 0;
+  }
+
+  .num_rows {
+    width: 20%;
+    float: left;
+  }
+
+  .tb_search {
+    width: 20%;
+    float: right;
+  }
+
+  .pagination-container {
+    width: 70%;
+    float: left;
+  }
+
+  .rows_count {
+    width: 20%;
+    float: right;
+    text-align: right;
+    color: #999;
+  }
+</style>
+
+<style>
+  body {
+  padding-right: 40px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 20px;
+  align-items: stretch;
+}
+
+.grid > article {
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.grid > article img {
+  max-width: 100%;
+}
+
+.grid .text {
+  padding: 20px;
+}
+
+.card{
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+cursor: pointer;
+}
+
+.card:hover{
+  transform: scale(1.05);
+box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+</style>
+
+<div id="TableData" class="container-fluid">
+  <!-- <div class="header_wrap">
+    
+
+        <div class="input-group input-group-sm mb-1 ">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Search</span>
+          </div>
+          <input type="text" class="form-control" id="search_input_all" onkeyup="FilterkeyWord_all_table()" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+        </div>
+
+        <div class="">
+          <span > <h6> Total count : <span id="bdg"></span> </h6></span>
+        </div> 
+    
+    <div class="tb_search">
+      <input
+        type="text"
+        id="search_input_all"
+        onkeyup="FilterkeyWord_all_table()"
+        placeholder="Search.."
+        class="form-control"
+      />
+    </div>
+  </div> -->
+<!--   
+  <script>  $(document).ready(function(){
+    table = document.getElementById("table-id");
+    tr = table.getElementsByTagName("tr");
+    console.log("HI");
+    console.log(tr.length);
+    document.getElementById("bdg").innerHTML=tr.length-1;})
+</script> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" /> -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css" />
+<!-- <script type="text/javascript" src= "https://code.jquery.com/jquery-3.5.1.js"></script>  -->
+<script type="text/javascript" src= "https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src= "https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script> 
+
+
+<div class="container-fluid table-responsive-xl">
+  <table
+    class="table table-hover"
+    id="table-id"
+    style="table-layout: fixed; " 
+  >
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Common Name</th>
+      <th>Scientific Name</th>
+      <th>Location</th>
+      <th>Elevation</th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for data in data %}
+    <tr  style=" color: #56ab2f; font-weight: bold; ">
+    <td style="text-align: center;">{{data[1]}}</td>
+    <td style="text-transform: capitalize;text-align: left;">{{data[5]}}</td>
+    <td style="text-align: left;"> <i> {{data[9]}} {{data[8]}} </i></td>
+    <td style="text-align: left;">{{data[2]}}</td>
+    <td style="text-align: center;">{{'%0.2f'|format(data[14]|float)}}</td>
+
+   </tr>
+    {% endfor %}
+    
+  <tbody>
+
+  </table>
+</div>
+<script>
+  $(document).ready(function(){
+    $('#table-id').dataTable();
+});
+</script>
+  
+</div>
+<!-- 		End of Container -->
+{% endblock %} 
+
+{% block gallery %}
+<div id="cards_landscape_wrap-2">
+  <div class="container-fluid">
+    <div class="row">
+      <style>
+        /*----  Main Style  ----*/
+  #cards_landscape_wrap-2{
+    text-align: left;
+    background: #F7F7F7;
+  }
+  #cards_landscape_wrap-2 .container{
+    padding-top: 80px; 
+    padding-bottom: 100px;
+  }
+  #cards_landscape_wrap-2 a{
+    text-decoration: none;
+    outline: none;
+  }
+  #cards_landscape_wrap-2 .card-flyer {
+    border-radius: 5px;
+    height: 450px;
+  }
+  #cards_landscape_wrap-2 .card-flyer .image-box{
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.50);
+    border-radius: 5px;
+  }
+  #cards_landscape_wrap-2 .card-flyer .image-box img{
+    -webkit-transition:all .9s ease; 
+    -moz-transition:all .9s ease; 
+    -o-transition:all .9s ease;
+    -ms-transition:all .9s ease; 
+    width: 100%;
+    height: 250px;
+  }
+  #cards_landscape_wrap-2 .card-flyer:hover .image-box img{
+    opacity: 0.7;
+    -webkit-transform:scale(1.15);
+    -moz-transform:scale(1.15);
+    -ms-transform:scale(1.15);
+    -o-transform:scale(1.15);
+    transform:scale(1.15);
+  }
+  #cards_landscape_wrap-2 .card-flyer .text-box{
+    text-align: left;
+  }
+  #cards_landscape_wrap-2 .card-flyer .text-box .text-container{
+    padding: 30px 18px;
+  }
+  #cards_landscape_wrap-2 .card-flyer{
+    background: #FFFFFF;
+    margin-top: 50px;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -ms-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.40);
+  }
+  #cards_landscape_wrap-2 .card-flyer:hover{
+    background: #fff;
+    box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -ms-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    margin-top: 50px;
+  }
+  #cards_landscape_wrap-2 .card-flyer .text-box p{
+    margin-top: 10px;
+    margin-bottom: 0px;
+    padding-bottom: 0px; 
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #000000;
+  }
+  #cards_landscape_wrap-2 .card-flyer .text-box h6{
+    margin-top: 0px;
+    margin-bottom: 4px; 
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Roboto Black', sans-serif;
+    letter-spacing: 1px;
+    color: #3e9c07f5;
+  }
+  .gallery_sciname{
+    font-size: 26px;
+    color:#3b8a3e 
+  }
+      </style>
+
+      {%for i in gallery_data %}
+      
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <a href="{{url_for('speciesgallery', species_name=i[9], sub_species=i[8])}}">
+          <div class="card-flyer">
+            <div class="text-box">
+              <div class="image-box">
+                  <img src="../static/img/butterfly/{{i[0]}}" onerror="this.src='../static/img/butterfly1.jpg'" />
+              </div>
+              <div class="text-container">
+                  <i class="gallery_sciname">{{i[9]}} {{i[8]}}</i>
+                  <p style="font-size: 24px; ">Count : {{i[15]}}</p>
+              </div>
+              <!-- <div>
+                <a href="{{url_for('speciesgallery', species_name=i[9], sub_species=i[8])}}" class="btn btn-outline-success btn-icon-right">
+                  <span>View More
+                    <img src="https://static3.avast.com/1/web/i/v2/components/arrow-m-right-orange.png" height="24">
+                  </span>
+                </a>
+              </div> -->
+            </div>
+          </div>
+        </a>
+      </div>
+      {%endfor%}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block map %}
+<div class="embed-responsive embed-responsive-21by9">
+                  <iframe
+                  id="map"
+                    src="{{url}}"
+                    height="500px"
+                    class="embed-responsive-item"
+                    frameborder="0"
+                    style="width: 100%; padding-bottom: 20px"
+                  ></iframe>
+                </div>
+{% endblock %}
+
+{% block analysis %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+<style>
+  .chart{
+    border: #00a650;
+    border-width: 2px;
+    border-style: groove;
+    border-radius: 8px;
+    box-shadow: 5px 10px #7ebd7b;
+    padding:10px;
+  }
+
+  .viz{
+    padding:10px;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="viz">
+      <h3> <b>Species v/s Count </b></h3>
+      <div class="chart" id="bargraph">
+        <script>
+            var graphs = {{plot | safe}};
+            Plotly.plot('bargraph',graphs,{});
+        </script>
+      </div>
+    </div>
+
+    <div class="viz">
+      <h3> <b> Location v/s Count </b></h3>
+      <div class="chart" id="locnvscount">
+
+        <script>
+            var lgraphs = {{locndeets | safe}};
+            Plotly.plot('locnvscount',lgraphs,{});
+        </script>
+      </div>
+    </div>
+
+    <div class="viz">
+      <h3> <b>Location v/s Species</b></h3>
+      <div class="chart" id="locnvsspecies">
+
+        <script>
+            var sgraphs = {{locnspecies | safe}};
+            Plotly.plot('locnvsspecies',sgraphs,{});
+        </script>
+      </div>
+    </div>  
+
+
+  </div>
+</div>
+{% endblock %}
