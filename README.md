@@ -31,6 +31,17 @@ This repository contains code for full-stack website which was built as a part o
 #### Home Page :
 Screenshot -->
 
+#### Upload Page
+#### Data Page 
+#### Register/Login Page
+#### About Page
+
+#### Image Classification Model :
+[IPYNB File](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/Classification_using_Transfer_learning.ipynb) 
+
+[Saved Model](https://github.com/Aniket-508/PatangAbhidani/blob/main/model.h5)  
+
+
 #### Steps for Installation :
 1. Clone this repository
 ```
@@ -47,7 +58,8 @@ $ python -m pip install flask
 ```
 $ env\Scripts\Activate.ps1
 ```
-4. Complete the installation by executing the following command 
+4. Complete the installation by executing the following commmand 
 ```
 $ python user.py
 ```
+### For a detailed report on the project, check [here](https://github.com/Aniket-508/PatangAbhidani/blob/main/Project%20report.pdf)
