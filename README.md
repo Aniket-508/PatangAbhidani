@@ -26,7 +26,27 @@ This repository contains code for full-stack website which was built as a part o
 - Register/Login Page
 - About Page
 - Image Classification Model
+- Steps for Installation
 
 #### Home Page :
 Screenshot -->
 
+#### Steps for Installation :
+1. Clone this repository
+```
+$ git clone https://github.com/Aniket-508/PatangAbhidani.git
+```
+2. Setting up virtual environment for Flask
+```
+$ python -m venv env
+$ python -m pip install flask
+```     
+(Make sure you have changed the Python Interpreter by going to './env' and selecting the 'python.exe' file)
+3. Activating the virtual environment
+```
+$ env\Scripts\Activate.ps1
+```
+4. Complete the installation by executing the following commmand 
+```
+$ python user.py
+```
