@@ -58,7 +58,7 @@ $ python -m pip install flask
 ```
 $ env\Scripts\Activate.ps1
 ```
-4. Complete the installation by executing the following commmand 
+4. Complete the installation by executing the following command 
 ```
 $ python user.py
 ```
