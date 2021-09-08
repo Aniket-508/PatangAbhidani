@@ -42,6 +42,7 @@ $ python -m venv env
 $ python -m pip install flask
 ```     
 (Make sure you have changed the Python Interpreter by going to './env' and selecting the 'python.exe' file)
+
 3. Activating the virtual environment
 ```
 $ env\Scripts\Activate.ps1
