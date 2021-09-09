@@ -39,7 +39,7 @@ Screenshot -->
 #### Image Classification Model :
 [IPYNB File](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/Classification_using_Transfer_learning.ipynb) 
 
-[Saved Model](https://github.com/Aniket-508/PatangAbhidani/blob/main/model.h5)  
+[Saved Model](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/model.h5)  
 
 
 #### Steps for Installation :
