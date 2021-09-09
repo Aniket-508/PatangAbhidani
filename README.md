@@ -66,4 +66,4 @@ $ pip install -r requirements.txt
 ```
 $ python user.py
 ```
-### For a detailed report on the project, check [here](https://github.com/Aniket-508/PatangAbhidani/blob/main/Project%20report.pdf)
+### For a detailed report on the project, check [here](https://docs.google.com/document/d/1xEumbL4Hbt-EMJ50DFR8WZnEXBHlCUmx_SOB2FV-SV8/edit?usp=sharing)
