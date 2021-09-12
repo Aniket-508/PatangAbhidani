@@ -1,10 +1,10 @@
-## Patang Abhidani - A comprehensive guide for lepidopterists and butterfly-enthusiasts.
+# Patang Abhidani - A comprehensive guide for lepidopterists and butterfly-enthusiasts.
 
-### Brief Summary :
+## Brief Summary :
 The primary motivation for the project was that Skipper butterflies aren’t well documented in India. Due to rapid urbanization, butterfly counts have been receding and it is important to track the migration patterns of these butterflies to prevent them from going extinct. The system built would be able to accomplish this by gathering user submitted data and verifying its validity. This would enable new researchers to get information about skippers without having to go through the plethora of websites online. It would also work as a good platform for users to share photographs clicked by them and hence increase the total data available online.
 This repository contains code for full-stack website which was built as a part of our Third Year Engineering project for a local NGO named 'Green Works Trust' and successfully submitted to them after the given period.
 
-### Tech Stack :
+## Tech Stack :
 - [HTML](https://en.wikipedia.org/wiki/HTML)
 - [Bootstrap CSS](https://en.wikipedia.org/wiki/Bootstrap_(front-end_framework))
 - [Javascript](https://en.wikipedia.org/wiki/JavaScript)
@@ -19,7 +19,7 @@ This repository contains code for full-stack website which was built as a part o
 - [Selenium](https://en.wikipedia.org/wiki/Selenium_(software))
 - [Folium](https://python-visualization.github.io/folium/)
 
-### Table of Contents :
+## Table of Contents :
 - Home Page
 - Upload Page
 - Data Page 
@@ -28,21 +28,21 @@ This repository contains code for full-stack website which was built as a part o
 - Image Classification Model
 - Steps for Installation
 
-#### Home Page :
+### Home Page :
 Screenshot -->
 
-#### Upload Page
-#### Data Page 
-#### Register/Login Page
-#### About Page
+### Upload Page
+### Data Page 
+### Register/Login Page
+### About Page
 
-#### Image Classification Model :
+### Image Classification Model :
 [IPYNB File](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/Classification_using_Transfer_learning.ipynb) 
 
 [Saved Model](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/model.h5)  
 
 
-#### Steps for Installation :
+### Steps for Installation :
 1. Clone this repository
 ```
 $ git clone https://github.com/Aniket-508/PatangAbhidani.git
