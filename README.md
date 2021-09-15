@@ -24,17 +24,18 @@ This repository contains code for full-stack website which was built as a part o
 - Upload Page
 - Data Page 
 - Register/Login Page
-- About Page
 - Image Classification Model
 - Steps for Installation
 
 ### Home Page :
-Screenshot -->
+![]()
 
 ### Upload Page
+![]()
 ### Data Page 
+![]()
 ### Register/Login Page
-### About Page
+![]()
 
 ### Image Classification Model :
 [IPYNB File](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/Classification_using_Transfer_learning.ipynb) 
