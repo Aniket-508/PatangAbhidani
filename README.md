@@ -28,14 +28,19 @@ This repository contains code for full-stack website which was built as a part o
 - Steps for Installation
 
 ### Home Page :
-![]()
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa1.png)
 
 ### Upload Page
-![]()
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa5.png)
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa4.png)
+
 ### Data Page 
-![]()
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa6.png)
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa7.png)
+
 ### Register/Login Page
-![]()
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa2.png)
+![](https://github.com/Aniket-508/PatangAbhidani/blob/main/Screenshots/pa3.png)
 
 ### Image Classification Model :
 [IPYNB File](https://github.com/Aniket-508/PatangAbhidani/blob/main/model/Classification_using_Transfer_learning.ipynb) 
